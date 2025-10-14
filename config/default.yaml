@@ -1,0 +1,46 @@
+model:
+  llama3:
+    model_name: "meta-llama/Meta-Llama-3-8B-Instruct"
+    device: "cuda"
+    torch_dtype: "float16"
+    max_length: 512
+    temperature: 0.1
+  sentence_bert:
+    model_name: "sentence-transformers/all-MiniLM-L6-v2"
+    device: "cuda"
+    embedding_dim: 384
+
+channel:
+  type: "AWGN"
+  noise_power_db: null  # Calculated from SNR
+
+mlp:
+  encoder:
+    input_dim: 384
+    hidden_dims: [512]
+    output_dim: 256
+    activation: "relu"
+    dropout: 0.1
+  decoder:
+    input_dim: 256
+    hidden_dims: [512]
+    output_dim: 384
+    activation: "relu"
+    dropout: 0.1
+
+training:
+  batch_size: 32
+  learning_rate: 1e-3
+  epochs: 100
+  optimizer: "adam"
+  loss_function: "mse"
+  scheduler:
+    type: "cosine"
+    warmup_steps: 1000
+  snr_range: [0, 20]  # dB
+  device: "cuda"
+
+evaluation:
+  metrics: ["cosine_similarity", "bert_score", "bleu", "rouge"]
+  snr_test_points: [0, 5, 10, 15, 20]
+  test_dataset_size: 1000
