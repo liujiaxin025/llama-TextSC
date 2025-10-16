@@ -42,6 +42,7 @@ training:
   gradient_accumulation_steps: 4
   mixed_precision: true
   max_grad_norm: 1.0
+  use_wandb: false
 
 evaluation:
   metrics: ["cosine_similarity", "bert_score", "bleu", "rouge"]

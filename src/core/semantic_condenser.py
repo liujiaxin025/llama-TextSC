@@ -13,9 +13,8 @@ class SemanticCondenser:
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
         self.model = AutoModelForCausalLM.from_pretrained(
             model_name,
-            torch_dtype=self.torch_dtype,
-            device_map="auto"
-        )
+            torch_dtype=self.torch_dtype
+        ).to(self.device)
         
         # Set pad token if not exists
         if self.tokenizer.pad_token is None:
